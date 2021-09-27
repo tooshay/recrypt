@@ -15,11 +15,12 @@ class DataController extends Controller
 {
     public function store(StoreRequest $request): JsonResponse
     {
-        $encrypter = new Encrypter(request('encryption_key'));
+        $validated = $request->validated();
+        $encrypter = new Encrypter($validated['encryption_key']);
 
-        $data = Data::firstOrNew(['id' => request('id')]);
+        $data = Data::firstOrNew(['id' => $validated['id']]);
 
-        $data->value = $encrypter->encrypt(request('value'));
+        $data->value = $encrypter->encrypt($validated['value']);
 
         if ($data->save()) {
             return response()->json([

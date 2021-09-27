@@ -24,8 +24,9 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
+            'id' => 'required',
             'encryption_key' => 'required|size:16',
-            'id' => 'required'
+            'value' => 'required'
         ];
     }
 }
