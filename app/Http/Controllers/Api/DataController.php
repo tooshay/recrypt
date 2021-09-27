@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RetrieveRequest;
+use App\Http\Requests\StoreRequest;
 use App\Models\Data;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Http\JsonResponse;
@@ -11,11 +13,12 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class DataController extends Controller
 {
-    public function store(): JsonResponse
+    public function store(StoreRequest $request): JsonResponse
     {
+        $encrypter = new Encrypter(request('encryption_key'));
+
         $data = Data::firstOrNew(['id' => request('id')]);
 
-        $encrypter = new Encrypter(request('encryption_key'));
         $data->value = $encrypter->encrypt(request('value'));
 
         if ($data->save()) {
@@ -29,7 +32,7 @@ class DataController extends Controller
         ], ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
     }
 
-    public function show(string $id): JsonResponse
+    public function show(RetrieveRequest $request, string $id): JsonResponse
     {
         if (\Str::contains($id, '*')) {
             $id = \Str::of($id)->explode('*');

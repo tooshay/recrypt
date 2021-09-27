@@ -1,64 +1,56 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Recrypt
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A simple API to store and encrypt, and fetch and decrypt values.
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Installation
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+* Run `git clone https://github.com/tooshay/recrypt.git`
+* Edit `.env` file to set correct database environment variables
+* Run `composer update` to fetch external dependencies
+* Run `php artisan key:generate`
+* Run `php artisan migrate`
+* Run `php artisan serve` or choose your preferred means for running this locally
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Running tests
+I've opted for [PEST](https://pestphp.com/), _the_ new testing framework going around. To run the tests, run `./vendor/bin/pest`
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Questions
+1. Q: What would you add to your solution if you had more time? A: I'd probably move out the encrypting logic to a service to clean up my controllers and test that in isolation. I'd write a more comprehensive set of tests.
+2. Q: How did you encrypt the data and why? A: I chose Laravel's encryption facade. It seemed like the obvious choice as it's part of the framework, relies on teh widely accepted and used OpenSSL library and a message authentication code to prevent tampering with encrypted values. 
+3. Q: How would you test this solution for performance in production? A: I can't see this particular solution presenting any obvious performance issues but were this to become more complicated/process-heavy, I'd look to an external tool (JMeter?) to load test the API and see where the bottlenecks are. Otherwise I'd look at logs, DB query times etc. 
+4. Please describe yourself using JSON:
+```json
+{
+    "name": "Roy Shay",
+    "gender": "Male",
+    "address": [
+        {
+            "street": "2 Buckingham Ave.",
+            "city": "West Molesey",
+            "county": "Surrey",
+            "postcode": "KT8 1TG"
+        }
+    ],
+    "favourite_foods": [
+        {
+            "chinese": [
+                {
+                    "favourite_dishes": [
+                        "Crispy Duck",
+                        "Gong Bao Chicken"
+                    ]
+                }
+            ],
+            "middle eastern": [
+                {
+                    "favourite_dishes": [
+                        "Hummus",
+                        "Siniya"
+                    ]
+                }
+            ]
+        }
+    ]
+}
+```
